@@ -3,6 +3,7 @@ import Todo from "./Todo";
 
 export default function TodoList() {
   const [todos, setTodos] = useState([]); /// Hooks
+  const [selectedTodoForEdit, setSelectedTodoForEdit] = useState(null);
   // const [newTodo, setNewTodo] = useState(null);
 
   let newTodo = useRef(null);
@@ -28,6 +29,19 @@ export default function TodoList() {
 
   const removeTodo = (index) => {
     setTodos([...todos.slice(0, index), ...todos.slice(index + 1)]);
+    setSelectedTodoForEdit(null);
+  };
+
+  const editTodo = (index) => {
+    setSelectedTodoForEdit(index);
+  };
+
+  const editTodoComplete = (e, index) => {
+    if (e.key === "Enter") {
+      todos[index] = e.target.value;
+      setTodos(todos);
+      setSelectedTodoForEdit(null);
+    }
   };
 
   return (
@@ -55,7 +69,30 @@ export default function TodoList() {
             alignItems: "center",
           }}
         >
-          <Todo todo={todo} key={indx} />
+          {selectedTodoForEdit !== indx ? (
+            <>
+              <Todo todo={todo} key={indx} />
+              <button
+                style={{
+                  height: "40%",
+                  marginLeft: "30px",
+                  backgroundColor: "red",
+                  color: "white",
+                  border: "none",
+                }}
+                onClick={(e) => editTodo(indx)}
+              >
+                Edit
+              </button>
+            </>
+          ) : (
+            <input
+              type="text"
+              placeholder={todo}
+              onKeyDown={(e) => editTodoComplete(e, indx)}
+            />
+          )}
+
           <button
             style={{
               height: "40%",
