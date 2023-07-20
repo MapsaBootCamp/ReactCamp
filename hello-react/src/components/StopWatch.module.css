@@ -1,0 +1,11 @@
+.timerShowContainer {
+    background-color: red;
+    width: 200px;
+    height: 100px;
+    margin: auto;
+    padding: 50px;
+}
+
+.timerShow{
+    font-size: 40px;
+}

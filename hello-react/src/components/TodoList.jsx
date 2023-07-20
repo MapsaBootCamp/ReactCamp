@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import Todo from "./Todo";
+import React, { useState, useRef, useEffect } from 'react';
+import Todo from './Todo';
 
 export default function TodoList() {
   const [todos, setTodos] = useState([]); /// Hooks
@@ -37,7 +37,7 @@ export default function TodoList() {
   };
 
   const editTodoComplete = (e, index) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       todos[index] = e.target.value;
       setTodos(todos);
       setSelectedTodoForEdit(null);
@@ -55,18 +55,18 @@ export default function TodoList() {
         ref={newTodo}
         placeholder="Todo title"
         name="newTodo"
-        onKeyDown={(e) => (e.key === "Enter" ? addNewTodoHandler(e) : null)}
+        onKeyDown={(e) => (e.key === 'Enter' ? addNewTodoHandler(e) : null)}
       />
-      <button onClick={addNewTodoHandler} style={{ marginLeft: "20px" }}>
+      <button onClick={addNewTodoHandler} style={{ marginLeft: '20px' }}>
         +AddTodo
       </button>
       {todos.map((todo, indx) => (
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           {selectedTodoForEdit !== indx ? (
@@ -74,11 +74,11 @@ export default function TodoList() {
               <Todo todo={todo} key={indx} />
               <button
                 style={{
-                  height: "40%",
-                  marginLeft: "30px",
-                  backgroundColor: "red",
-                  color: "white",
-                  border: "none",
+                  height: '40%',
+                  marginLeft: '30px',
+                  backgroundColor: 'red',
+                  color: 'white',
+                  border: 'none',
                 }}
                 onClick={(e) => editTodo(indx)}
               >
@@ -95,11 +95,11 @@ export default function TodoList() {
 
           <button
             style={{
-              height: "40%",
-              marginLeft: "30px",
-              backgroundColor: "red",
-              color: "white",
-              border: "none",
+              height: '40%',
+              marginLeft: '30px',
+              backgroundColor: 'red',
+              color: 'white',
+              border: 'none',
             }}
             onClick={(e) => removeTodo(indx)}
           >
