@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Todo from './Todo';
-import styles from './Todo.module.css';
-import { findAllByTestId } from '@testing-library/react';
 
 export default function TodoList() {
   const [todos, setTodos] = useState([
