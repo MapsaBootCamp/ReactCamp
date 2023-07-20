@@ -1,55 +1,81 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Todo from './Todo';
+import styles from './Todo.module.css';
+import { findAllByTestId } from '@testing-library/react';
 
 export default function TodoList() {
-  const [todos, setTodos] = useState([]); /// Hooks
-  const [selectedTodoForEdit, setSelectedTodoForEdit] = useState(null);
-  // const [newTodo, setNewTodo] = useState(null);
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      name: 'reading JS book',
+      done: false,
+      dueDate: Date.now(),
+    },
+    {
+      id: 2,
+      name: 'coding JS project',
+      done: true,
+      dueDate: Date.now(),
+    },
+  ]); /// Hooks
+  const [filterFlag, setFilterFlag] = useState('ALL');
 
   let newTodo = useRef(null);
 
   useEffect(() => {
     newTodo.current.focus();
-  });
+  }, []);
 
-  // const addNewTodoHandler = (e) => {
-  //   e.preventDefault();
-  //   const newTodos = e.target.newTodo.value;
-  //   setTodos((todos) => [...todos, newTodos]);
-  //   e.target.newTodo.value = null;
-  // };
-
+  function filteredData() {
+    switch (filterFlag) {
+      case 'ALL':
+        return todos;
+      case 'DONE':
+        return todos.filter((todo) => todo.done);
+      case 'UNDONE':
+        return todos.filter((todo) => !todo.done);
+      default:
+        break;
+    }
+  }
   const addNewTodoHandler = (e) => {
     const newTodoVal = newTodo.current.value;
     if (newTodoVal) {
-      setTodos((todos) => [...todos, newTodoVal]);
+      setTodos((todos) => [
+        ...todos,
+        {
+          id: todos.length + 1,
+          name: newTodoVal,
+          dueDate: Date.now(),
+          done: false,
+        },
+      ]);
     }
     newTodo.current.value = null;
   };
 
-  const removeTodo = (index) => {
-    setTodos([...todos.slice(0, index), ...todos.slice(index + 1)]);
-    setSelectedTodoForEdit(null);
+  const removeTodo = (todoId) => {
+    setTodos(todos.filter((todo) => todo.id !== todoId));
   };
 
-  const editTodo = (index) => {
-    setSelectedTodoForEdit(index);
+  const editTodo = (todoId, newName) => {
+    setTodos((todos) =>
+      todos.map((todo) =>
+        todo.id === todoId ? { ...todo, name: newName } : todo
+      )
+    );
   };
 
-  const editTodoComplete = (e, index) => {
-    if (e.key === 'Enter') {
-      todos[index] = e.target.value;
-      setTodos(todos);
-      setSelectedTodoForEdit(null);
-    }
-  };
+  function toggleDoneTodo(todoId) {
+    setTodos((todos) =>
+      todos.map((todo) =>
+        todo.id === todoId ? { ...todo, done: !todo.done } : todo
+      )
+    );
+  }
 
   return (
     <>
-      {/* <form action="" onSubmit={addNewTodoHandler}>
-        <input type="text" placeholder="Todo title" name="newTodo" />
-        <button type="submit">+AddTodo</button>
-      </form> */}
       <input
         type="text"
         ref={newTodo}
@@ -60,7 +86,12 @@ export default function TodoList() {
       <button onClick={addNewTodoHandler} style={{ marginLeft: '20px' }}>
         +AddTodo
       </button>
-      {todos.map((todo, indx) => (
+      <select onChange={(e) => setFilterFlag(e.target.value)}>
+        <option value="ALL">ALL</option>
+        <option value="DONE">Done</option>
+        <option value="UNDONE">UnDone</option>
+      </select>
+      {filteredData(todos).map((todo) => (
         <div
           style={{
             display: 'flex',
@@ -69,42 +100,13 @@ export default function TodoList() {
             alignItems: 'center',
           }}
         >
-          {selectedTodoForEdit !== indx ? (
-            <>
-              <Todo todo={todo} key={indx} />
-              <button
-                style={{
-                  height: '40%',
-                  marginLeft: '30px',
-                  backgroundColor: 'red',
-                  color: 'white',
-                  border: 'none',
-                }}
-                onClick={(e) => editTodo(indx)}
-              >
-                Edit
-              </button>
-            </>
-          ) : (
-            <input
-              type="text"
-              placeholder={todo}
-              onKeyDown={(e) => editTodoComplete(e, indx)}
-            />
-          )}
-
-          <button
-            style={{
-              height: '40%',
-              marginLeft: '30px',
-              backgroundColor: 'red',
-              color: 'white',
-              border: 'none',
-            }}
-            onClick={(e) => removeTodo(indx)}
-          >
-            -
-          </button>
+          <Todo
+            key={todo.id}
+            todo={todo}
+            editTodo={editTodo}
+            removeTodo={removeTodo}
+            toggleDoneTodo={toggleDoneTodo}
+          />
         </div>
       ))}
     </>

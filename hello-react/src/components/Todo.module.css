@@ -1,0 +1,14 @@
+.buttonDelete{
+    height: 40%;
+    margin-left: 30px;
+    cursor: pointer;
+    border: none;
+}
+
+.buttonEdit{
+    height: 40%;
+    margin-left: 30%;
+    background-color: red;
+    color: white;
+    border: none;
+  }
