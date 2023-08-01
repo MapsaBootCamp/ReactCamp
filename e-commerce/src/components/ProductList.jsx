@@ -49,13 +49,30 @@ function CategoryLoading() {
 export default function ProductList() {
   const [search, setSearch] = useState(null);
   const [filter, setFilter] = useState(null);
+  const [fetchedData, setFetchedData] = useState(null);
+  const [fetchedCategory, setFetchedCategory] = useState(null);
 
-  const readCategories = handlePromise(
-    fetchProduct("https://fakestoreapi.com/products/categories")
-  );
-  const readProducts = handlePromise(
-    fetchProduct("https://fakestoreapi.com/products")
-  );
+  let readCategories;
+  let readProducts;
+
+  if (fetchedCategory) {
+    readCategories = fetchedCategory;
+  } else {
+    readCategories = handlePromise(
+      fetchProduct("https://fakestoreapi.com/products/categories")
+    );
+    setFetchedCategory(readCategories);
+  }
+
+  if (fetchedData) {
+    readProducts = fetchedData;
+  } else {
+    readProducts = handlePromise(
+      fetchProduct("https://fakestoreapi.com/products")
+    );
+    setFetchedData(readProducts);
+  }
+
   const toggleCategoryHandler = (catName) => {
     if (catName === filter) {
       setFilter(null);
