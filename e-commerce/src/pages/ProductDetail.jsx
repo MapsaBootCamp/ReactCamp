@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Suspense, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
-
+import { fetchProduct, handlePromise } from "../utils";
 // function use(promise){
 // if (promise.status === 'fulfilled') {
 //     return promise.value;
@@ -49,41 +49,6 @@ import Loading from "../components/Loading";
 //   throw fetcher
 // }
 
-function handlePromise(promise) {
-  let status = "pending";
-  let fetching = promise.then(
-    (result) => {
-      status = "fulfilled";
-      fetching = result;
-    },
-    (reason) => {
-      status = "rejected";
-      fetching = reason;
-    }
-  );
-  return {
-    read() {
-      if (status === "fulfilled") {
-        return fetching;
-      } else if (status === "rejected") {
-        throw fetching;
-      } else {
-        throw fetching;
-      }
-    },
-  };
-}
-
-async function fetchProduct(url) {
-  try {
-    const resp = await fetch(url);
-    const data = await resp.json();
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
 function ProductShow({ readProduct }) {
   const data = readProduct.read();
   return (
@@ -112,7 +77,7 @@ export default function ProductDetail() {
     <div className="container">
       {/* {isLoading ? <Loading /> : <ProductShow product={data} />} */}
       <Suspense fallback={<Loading />}>
-        <ProductShow readProduct={readProduct} x={x} />
+        <ProductShow readProduct={readProduct} />
       </Suspense>
     </div>
   );
