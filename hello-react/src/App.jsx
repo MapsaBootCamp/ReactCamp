@@ -1,5 +1,6 @@
 // import { useState } from 'react';
 import './App.css';
+import ParentComponent from './components/ParentComponent';
 // import StopWatch from './components/StopWatch';
 // import TutUseEffect from './components/tutUseEffect';
 
@@ -16,7 +17,8 @@ function App() {
   // }
   return (
     <div className="App">
-      <TodoList />
+      <ParentComponent />
+      {/* <TodoList /> */}
       {/* <StopWatch /> */}
       {/* {componentShowFlag ? (
         <TutUseEffect count={count} />
