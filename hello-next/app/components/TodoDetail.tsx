@@ -7,20 +7,15 @@ import React, { useState } from "react";
 export default function TodoDetail({
   todo,
   toggleTodo,
+  handleRemove,
 }: {
   todo: Todo;
   toggleTodo: any;
+  handleRemove: (id: number) => void;
 }) {
-  const [flag, setFlag] = useState(false);
-  const [dataState, setDataState] = useState(todo);
-
   const handleToggleTodo = async (e: any, todoId: any) => {
     const data = await toggleTodo(todoId, !e.target.checked);
-    setDataState(data);
-    setFlag(!flag);
   };
-
-  console.log(dataState);
 
   const contents = (
     <li className="rounded-lg">
@@ -59,7 +54,10 @@ export default function TodoDetail({
             </svg>
             <span className="text-sm">Edit</span>
           </Link>
-          <button className="text-sm flex text-red-500 items-center gap-1 border-2 border-red-500 p-2 hover:text-white hover:bg-red-500 rounded-lg">
+          <button
+            onClick={() => handleRemove(todo.id)}
+            className="text-sm flex text-red-500 items-center gap-1 border-2 border-red-500 p-2 hover:text-white hover:bg-red-500 rounded-lg"
+          >
             <svg
               className="h-4 w-4"
               viewBox="0 0 24 24"
