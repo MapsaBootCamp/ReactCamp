@@ -1,5 +1,4 @@
-import { PrismaClient, Todo } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/app/utils/db";
 
 export async function toggleTodo(todoId: any, status: boolean) {
   "use server";

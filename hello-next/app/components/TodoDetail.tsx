@@ -1,7 +1,7 @@
 "use client";
 
 import { Todo } from "@prisma/client";
-import { log } from "console";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function TodoDetail({
@@ -20,29 +20,42 @@ export default function TodoDetail({
   };
 
   const contents = (
-    <li key={todo.id} className="p-2 rounded-lg">
-      <div className="flex align-middle flex-row justify-between">
-        <div className="p-2">
-          <input
-            type="checkbox"
-            className="h-6 w-6 "
-            value={todo.isDone ? "true" : "false"}
-            checked={todo.isDone}
-            onChange={(e) => handleToggleTodo(e, todo.id, todo.isDone)}
-          />
-        </div>
-        <div className="p-2">
-          <p
-            className={`text-lg ${
-              todo.isDone ? "line-through  text-gray-400" : " text-gray-800"
-            }`}
-          >
-            {todo.title}
-          </p>
-        </div>
-        <button className="flex text-red-500 border-2 border-red-500 p-2 rounded-lg">
+    <li className="p-2 rounded-lg">
+      <div className="flex align-middle items-center flex-row justify-between">
+        <input
+          id={String(todo.id)}
+          type="checkbox"
+          className="cursor-pointer peer h-6 w-6 "
+          defaultChecked={todo.isDone}
+          onChange={(e) => handleToggleTodo(e, todo.id, todo.isDone)}
+        />
+        <label
+          htmlFor={String(todo.id)}
+          className="cursor-pointer peer-checked:line-through peer-checked:text-slate-200"
+        >
+          {todo.title}
+        </label>
+        <Link
+          href={`/todos/${todo.id}`}
+          className="flex text-blue-500 border-2 items-center gap-1 border-blue-500 p-2  hover:text-white hover:bg-blue-500 rounded-lg"
+        >
           <svg
-            className="h-6 w-6 text-red-500"
+            className="h-4 w-4"
+            viewBox="0 0 24 30"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="9" y1="12" x2="9" y2="20" />{" "}
+            <line x1="9" y1="20" x2="20" y2="9" />
+          </svg>
+          <span className="text-sm">Edit</span>
+        </Link>
+        <button className="text-sm flex text-red-500 items-center gap-1 border-2 border-red-500 p-2 hover:text-white hover:bg-red-500 rounded-lg">
+          <svg
+            className="h-4 w-4"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

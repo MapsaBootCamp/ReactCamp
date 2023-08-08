@@ -1,15 +1,14 @@
 import React from "react";
-import { PrismaClient, Todo } from "@prisma/client";
 import TodoDetail from "@/app/components/TodoDetail";
+import { prisma } from "@/app/utils/db";
 import { toggleTodo } from "../utils/todoCreate";
-const prisma = new PrismaClient();
 
 export default async function TodoList() {
   const todos = await prisma.todo.findMany();
 
   return (
     <>
-      <div className="w-full h-screen bg-gray-100 pt-8">
+      <div className="w-full h-screen pt-8">
         <div className="bg-white p-3 max-w-md mx-auto">
           <div className="text-center">
             <h1 className="text-3xl font-bold">ToDo App</h1>
@@ -31,7 +30,6 @@ export default async function TodoList() {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  {" "}
                   <path stroke="none" d="M0 0h24v24H0z" />{" "}
                   <circle cx="12" cy="12" r="9" />{" "}
                   <line x1="9" y1="12" x2="15" y2="12" />{" "}

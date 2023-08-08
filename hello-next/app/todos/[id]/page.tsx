@@ -1,19 +1,17 @@
-import { ExecException } from "child_process";
-import { resolve } from "path";
 import React from "react";
+import { prisma } from "@/app/utils/db";
+import { notFound } from "next/navigation";
 
 export default async function TodoDetail({
   params,
 }: {
   params: { id: number };
 }) {
-  await sleep(1000);
-  console.log("SALAM");
-  return <div>TodoDetail {params.id}</div>;
-}
-
-function sleep(ms: number) {
-  return new Promise((resolve: any, reject) => {
-    setTimeout(() => resolve(), ms);
+  const todo = await prisma.todo.findFirst({
+    where: { id: Number(params.id) },
   });
+  if (!todo) {
+    notFound();
+  }
+  return <div>TodoDetail {todo.title}</div>;
 }
