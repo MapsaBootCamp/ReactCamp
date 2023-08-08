@@ -2,7 +2,7 @@
 
 
 # prisma lcoal db
-deb.db
+dev.db
 
 # dependencies
 /node_modules
